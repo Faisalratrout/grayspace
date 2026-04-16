@@ -11,10 +11,18 @@ type FormData = {
   message: string;
 };
 
+type SubmitState = {
+  type: 'idle' | 'success' | 'error';
+  message: string;
+};
+
+const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+const CONTACT_EMAIL = import.meta.env.VITE_PUBLIC_CONTACT_EMAIL || 'hello@grayspace.com';
+
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitState, setSubmitState] = useState<SubmitState>({ type: 'idle', message: '' });
   const heroRef = useRef<HTMLElement>(null);
   const { scrollY } = useScroll();
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
@@ -24,25 +32,51 @@ export default function App() {
 
   const onSubmit = async (data: FormData) => {
     setSubmitting(true);
+    setSubmitState({ type: 'idle', message: '' });
+
+    if (!WEB3FORMS_ACCESS_KEY) {
+      setSubmitState({
+        type: 'error',
+        message: 'The contact form is not configured yet. Add your Web3Forms key in the local .env file.',
+      });
+      setSubmitting(false);
+      return;
+    }
+
     try {
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          access_key: 'YOUR_WEB3FORMS_ACCESS_KEY', // Get your free key at web3forms.com
-          ...data,
-          subject: `New Project Inquiry from ${data.name}`,
-          from_name: 'Gray Space Portfolio',
+          access_key: WEB3FORMS_ACCESS_KEY,
+          name: data.name,
+          email: data.email,
+          phone: data.phone || 'Not provided',
+          message: data.message,
+          subject: `New Gray Space inquiry from ${data.name}`,
+          from_name: 'Gray Space Website',
+          replyto: data.email,
+          botcheck: false,
         }),
       });
+
       const result = await response.json();
-      if (result.success) {
-        setSubmitSuccess(true);
-        reset();
-        setTimeout(() => setSubmitSuccess(false), 5000);
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || 'Unable to send message.');
       }
+
+      setSubmitState({
+        type: 'success',
+        message: 'Thank you. Your message has been sent successfully.',
+      });
+      reset();
     } catch (err) {
       console.error('Form submission error:', err);
+      setSubmitState({
+        type: 'error',
+        message: `Sorry, we could not send your message right now. Please email us directly at ${CONTACT_EMAIL}.`,
+      });
     } finally {
       setSubmitting(false);
     }
@@ -324,23 +358,23 @@ export default function App() {
             <FadeInWhenVisible>
               <div>
                 <div className="space-y-8">
-                  <a href="tel:+201234567890" className="flex items-start gap-5 group">
+                  <a href="tel:+962796190362" className="flex items-start gap-5 group">
                     <div className="w-10 h-10 border border-white/10 flex items-center justify-center group-hover:border-white/30 transition-colors">
                       <Phone className="w-4 h-4 text-neutral-400" />
                     </div>
                     <div>
                       <div className="text-xs text-neutral-500 tracking-[0.2em] uppercase mb-1">Phone</div>
-                      <div className="text-white group-hover:text-neutral-300 transition-colors">+20 123 456 7890</div>
+                      <div className="text-white group-hover:text-neutral-300 transition-colors">+962 796 190 362</div>
                     </div>
                   </a>
 
-                  <a href="mailto:hello@grayspace.com" className="flex items-start gap-5 group">
+                  <a href={`mailto:${CONTACT_EMAIL}`} className="flex items-start gap-5 group">
                     <div className="w-10 h-10 border border-white/10 flex items-center justify-center group-hover:border-white/30 transition-colors">
                       <Mail className="w-4 h-4 text-neutral-400" />
                     </div>
                     <div>
                       <div className="text-xs text-neutral-500 tracking-[0.2em] uppercase mb-1">Email</div>
-                      <div className="text-white group-hover:text-neutral-300 transition-colors">hello@grayspace.com</div>
+                      <div className="text-white group-hover:text-neutral-300 transition-colors">{CONTACT_EMAIL}</div>
                     </div>
                   </a>
 
@@ -440,9 +474,12 @@ export default function App() {
                   )}
                 </div>
 
-                {submitSuccess && (
-                  <div className="border border-white/10 px-6 py-4 text-sm text-neutral-300">
-                    Thank you! We'll be in touch soon.
+                {submitState.type !== 'idle' && (
+                  <div
+                    aria-live="polite"
+                    className={`border px-6 py-4 text-sm ${submitState.type === 'success' ? 'border-emerald-500/30 text-emerald-300' : 'border-red-500/30 text-red-300'}`}
+                  >
+                    {submitState.message}
                   </div>
                 )}
 
@@ -485,11 +522,11 @@ export default function App() {
             <div>
               <div className="text-xs tracking-[0.3em] text-neutral-500 uppercase mb-6">Contact</div>
               <div className="flex flex-col gap-3">
-                <a href="tel:+201234567890" className="text-sm text-neutral-400 hover:text-white transition-colors">
-                  +20 123 456 7890
+                <a href="tel:+962796190362" className="text-sm text-neutral-400 hover:text-white transition-colors">
+                  +962 796 190 362
                 </a>
-                <a href="mailto:hello@grayspace.com" className="text-sm text-neutral-400 hover:text-white transition-colors">
-                  hello@grayspace.com
+                <a href={`mailto:${CONTACT_EMAIL}`} className="text-sm text-neutral-400 hover:text-white transition-colors">
+                  {CONTACT_EMAIL}
                 </a>
                 <span className="text-sm text-neutral-500">Amman, Jordan</span>
               </div>
