@@ -3,6 +3,11 @@ import type { ReactNode } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'motion/react';
 import { useForm } from 'react-hook-form';
 import { Mail, Phone, MapPin, Instagram, Facebook, Linkedin, Menu, X, ArrowRight } from 'lucide-react';
+import graySpaceLogo from '@/assets/Logo.PNG';
+import aboutImage from '@/assets/Residential.jpeg';
+import commercialImage from '@/assets/Commercial.jpeg';
+import architectureImage from '@/assets/Architecture .jpeg';
+import furnitureImage from '@/assets/Furniture.jpeg';
 
 type FormData = {
   name: string;
@@ -16,19 +21,109 @@ type SubmitState = {
   message: string;
 };
 
+type Project = {
+  title: string;
+  category: string;
+  summary: string;
+  cover: string;
+  images: string[];
+};
+
 const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
 const CONTACT_EMAIL = import.meta.env.VITE_PUBLIC_CONTACT_EMAIL || 'hello@grayspace.com';
+
+const portfolioProjects: Project[] = [
+  {
+    title: 'Contemporary Urban Bistro Design',
+    category: 'Residential',
+    summary: 'A calm, layered residence balancing natural light, texture, and warmth.',
+    cover: aboutImage,
+    images: [
+      aboutImage,
+      furnitureImage,
+      'https://images.unsplash.com/photo-1669387448840-610c588f003d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
+      'https://images.unsplash.com/photo-1774716925806-e152f1995bed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
+    ],
+  },
+  {
+    title: 'Soft Industrial Luxury',
+    category: 'Commercial',
+    summary: 'A refined commercial space designed for focus, elegance, and brand presence.',
+    cover: commercialImage,
+    images: [
+      commercialImage,
+      'https://images.unsplash.com/photo-1687180498602-5a1046defaa4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
+      'https://images.unsplash.com/photo-1771862860802-bd2e375f7422?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
+    ],
+  },
+  {
+    title: 'Warm Contemporary Living',
+    category: 'Residential',
+    summary: 'An inviting composition of soft tones, modern comfort, and layered warmth.',
+    cover: architectureImage,
+    images: [
+      architectureImage,
+      'https://images.unsplash.com/photo-1774716926071-fc03e73d0806?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
+      'https://images.unsplash.com/photo-1772567732983-447c7db0ce4e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
+    ],
+  },
+  {
+    title: 'Middle Eastern Minimalism',
+    category: 'Architecture',
+    summary: 'Clean geometry and quiet materials inspired by regional elegance and restraint.',
+    cover: furnitureImage,
+    images: [
+      furnitureImage,
+      aboutImage,
+      commercialImage,
+    ],
+  },
+  {
+    title: 'Aesthetic & Modern',
+    category: 'Interior Design',
+    summary: 'A polished visual language shaped by simplicity, balance, and modern detail.',
+    cover: 'https://images.unsplash.com/photo-1774716926071-fc03e73d0806?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
+    images: [
+      'https://images.unsplash.com/photo-1774716926071-fc03e73d0806?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
+      'https://images.unsplash.com/photo-1687180498602-5a1046defaa4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
+      'https://images.unsplash.com/photo-1771862860802-bd2e375f7422?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
+    ],
+  },
+  {
+    title: 'Concept & Plans',
+    category: 'Planning',
+    summary: 'Early-stage concepts, planning studies, and visual direction for each project.',
+    cover: 'https://images.unsplash.com/photo-1772567732983-447c7db0ce4e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
+    images: [
+      'https://images.unsplash.com/photo-1772567732983-447c7db0ce4e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
+      architectureImage,
+      commercialImage,
+    ],
+  },
+];
 
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitState, setSubmitState] = useState<SubmitState>({ type: 'idle', message: '' });
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [activeProjectImage, setActiveProjectImage] = useState('');
   const heroRef = useRef<HTMLElement>(null);
   const { scrollY } = useScroll();
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
   const heroScale = useTransform(scrollY, [0, 300], [1, 1.1]);
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
+
+  const openProject = (project: Project) => {
+    setSelectedProject(project);
+    setActiveProjectImage(project.images[0] ?? project.cover);
+  };
+
+  const closeProject = () => {
+    setSelectedProject(null);
+    setActiveProjectImage('');
+  };
 
   const onSubmit = async (data: FormData) => {
     setSubmitting(true);
@@ -86,16 +181,18 @@ export default function App() {
     <div className="bg-[#0c0c0c] text-neutral-100">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0c0c0c]/95 backdrop-blur-sm border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="flex items-center justify-between h-20">
-            <motion.div
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+          <div className="flex items-center justify-between h-16 sm:h-20">
+            <motion.a
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-2xl tracking-[0.3em] font-light text-white"
+              href="#"
+              className="flex items-center"
+              aria-label="Gray Space home"
             >
-              GRAY SPACE
-            </motion.div>
+              <img src={graySpaceLogo} alt="Gray Space" className="h-10 sm:h-12 md:h-16 w-auto opacity-95" />
+            </motion.a>
 
             <div className="hidden md:flex items-center gap-12">
               {['About', 'Services', 'Portfolio', 'Contact'].map((item, i) => (
@@ -146,7 +243,7 @@ export default function App() {
       </nav>
 
       {/* Hero Section */}
-      <section ref={heroRef} className="relative h-screen overflow-hidden">
+      <section ref={heroRef} className="relative min-h-[100svh] overflow-hidden">
         <motion.div
           style={{ opacity: heroOpacity, scale: heroScale }}
           className="absolute inset-0"
@@ -159,8 +256,8 @@ export default function App() {
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/20" />
         </motion.div>
 
-        <div className="relative h-full flex items-center">
-          <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full">
+        <div className="relative min-h-[100svh] flex items-center pt-16 sm:pt-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full">
             <div className="max-w-2xl">
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
@@ -174,7 +271,7 @@ export default function App() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-5xl md:text-7xl text-white mb-6 tracking-tight font-light"
+                className="text-4xl sm:text-5xl md:text-7xl text-white mb-5 tracking-tight font-light leading-[0.95]"
               >
                 Crafting Timeless Spaces
               </motion.h1>
@@ -182,7 +279,7 @@ export default function App() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
-                className="text-lg md:text-xl text-white/70 mb-10 max-w-lg leading-relaxed"
+                className="text-base sm:text-lg md:text-xl text-white/70 mb-8 max-w-lg leading-relaxed"
               >
                 Transforming interiors into extraordinary experiences through sophisticated design and meticulous attention to detail.
               </motion.p>
@@ -191,7 +288,7 @@ export default function App() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
-                className="inline-flex items-center gap-3 border border-white/30 text-white px-8 py-4 text-sm tracking-wider hover:bg-white hover:text-neutral-900 transition-all duration-300"
+                className="inline-flex w-full sm:w-auto justify-center items-center gap-3 bg-[#f1efeb] text-neutral-900 px-6 sm:px-8 py-4 text-xs sm:text-sm tracking-[0.18em] uppercase hover:bg-white transition-all duration-300"
               >
                 START YOUR PROJECT <ArrowRight size={16} />
               </motion.a>
@@ -203,7 +300,7 @@ export default function App() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1 }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2"
+          className="absolute bottom-6 sm:bottom-12 left-1/2 -translate-x-1/2"
         >
           <div className="w-6 h-10 border-2 border-white/20 rounded-full flex items-start justify-center p-2">
             <motion.div
@@ -215,36 +312,54 @@ export default function App() {
         </motion.div>
       </section>
 
+      <section className="bg-[#050505C6] border-t border-white/5 border-b border-white/5">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-12 py-20 md:py-32 text-center">
+          <FadeInWhenVisible>
+            <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl leading-[0.95] tracking-tight font-light text-white mb-8">
+              Not just design.<br />
+              Direction.
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl text-neutral-400 max-w-3xl mx-auto leading-relaxed">
+              We don't decorate spaces.<br />
+              We shape how they are experienced — through light, materials, and proportion.
+            </p>
+          </FadeInWhenVisible>
+        </div>
+      </section>
+
       <section id="about" className="bg-[#111111]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 py-24 lg:py-32">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-20 lg:py-32">
+          <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
             <FadeInWhenVisible>
               <img
-                src="https://images.unsplash.com/photo-1679862342541-e408d4f3ab80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200"
-                alt="About Gray Space"
-                className="w-full h-[600px] object-cover"
+                src={aboutImage}
+                alt="Gray Space interior"
+                className="w-full h-[340px] sm:h-[420px] md:h-[600px] object-cover"
               />
             </FadeInWhenVisible>
 
             <FadeInWhenVisible delay={0.2}>
               <div>
                 <p className="text-xs tracking-[0.4em] text-neutral-500 mb-6 uppercase">Our Story</p>
-                <h2 className="text-4xl md:text-5xl mb-6 tracking-tight font-light text-white">
-                  About Gray Space
-                </h2>
+                <div className="mb-6 flex items-center gap-3 sm:gap-4 md:gap-6 flex-wrap">
+                  <h2 className="text-4xl md:text-5xl tracking-tight font-light text-white">
+                    About
+                  </h2>
+                  <img src={graySpaceLogo} alt="Gray Space" className="h-12 sm:h-14 md:h-20 w-auto opacity-95" />
+                </div>
                 <p className="text-lg text-neutral-400 mb-6 leading-relaxed">
-                  With over 15 years of experience, we specialize in creating bespoke interiors that reflect your unique vision and lifestyle.
+                  With over 25 years of experience, we specialize in creating bespoke interiors that reflect your unique vision and lifestyle.
                 </p>
                 <p className="text-lg text-neutral-400 mb-10 leading-relaxed">
                   Our approach combines timeless elegance with contemporary innovation, ensuring every space we design becomes a masterpiece of form and function.
                 </p>
-                <div className="grid grid-cols-2 gap-8 border-t border-white/10 pt-10">
+                <div className="grid grid-cols-2 gap-4 sm:gap-8 border-t border-white/10 pt-8 sm:pt-10">
                   <div>
                     <div className="text-4xl font-light text-white mb-2">250+</div>
                     <div className="text-xs text-neutral-500 tracking-[0.2em] uppercase">Projects Completed</div>
                   </div>
                   <div>
-                    <div className="text-4xl font-light text-white mb-2">15+</div>
+                    <div className="text-4xl font-light text-white mb-2">25+</div>
                     <div className="text-xs text-neutral-500 tracking-[0.2em] uppercase">Years Experience</div>
                   </div>
                 </div>
@@ -255,7 +370,7 @@ export default function App() {
       </section>
 
       <section id="services" className="bg-[#0c0c0c]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 py-24 lg:py-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-20 lg:py-32">
           <FadeInWhenVisible>
             <p className="text-xs tracking-[0.4em] text-neutral-500 mb-4 uppercase text-center">What We Do</p>
             <h2 className="text-4xl md:text-5xl mb-4 tracking-tight font-light text-center text-white">
@@ -266,39 +381,52 @@ export default function App() {
             </p>
           </FadeInWhenVisible>
 
-          <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
+          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-px bg-white/10 overflow-hidden">
             {[
               {
-                title: 'Residential Design',
-                description: 'Transform your home into a sanctuary of style and comfort with our personalized residential design services.',
-                image: 'https://images.unsplash.com/photo-1614635884840-85cf80d23844?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800'
+                number: '01',
+                title: 'Residential',
+                description: 'Transform your home into a sanctuary of style and comfort.',
+                image: aboutImage
               },
               {
-                title: 'Commercial Spaces',
-                description: 'Create inspiring work environments that enhance productivity and reflect your brand identity.',
-                image: 'https://images.unsplash.com/photo-1690489965043-ec15758cce71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800'
+                number: '02',
+                title: 'Commercial',
+                description: 'Create inspiring environments that reflect your brand identity.',
+                image: commercialImage
               },
               {
-                title: 'Luxury Renovations',
-                description: 'Breathe new life into existing spaces with our expert renovation and restoration services.',
-                image: 'https://images.unsplash.com/photo-1771862956702-4e8b247e28b5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800'
+                number: '03',
+                title: 'Architecture',
+                description: 'Detailed concepts built around elegance, function, and precision.',
+                image: architectureImage
+              },
+              {
+                number: '04',
+                title: 'Furniture',
+                description: 'Curated selections that add warmth, texture, and character.',
+                image: furnitureImage
               }
             ].map((service, index) => (
-              <FadeInWhenVisible key={service.title} delay={index * 0.1}>
-                <div className="group cursor-pointer">
-                  <div className="overflow-hidden mb-6">
-                    <img
-                      src={service.image}
-                      alt={service.title}
-                      className="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-105 brightness-75 group-hover:brightness-90"
-                    />
+              <FadeInWhenVisible key={service.title} delay={index * 0.08}>
+                <div className="group relative cursor-pointer bg-black">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="w-full h-[420px] sm:h-[520px] object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/20" />
+                  <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 backdrop-blur-[1.5px]">
+                    <div className="text-[11px] tracking-[0.35em] text-white/35 mb-4 uppercase">
+                      {service.number}
+                    </div>
+                    <h3 className="text-2xl sm:text-3xl md:text-4xl font-light text-white/85 mb-4 leading-none">
+                      {service.title}
+                    </h3>
+                    <p className="text-white/55 leading-relaxed text-base max-w-xs">
+                      {service.description}
+                    </p>
                   </div>
-                  <h3 className="text-xl mb-3 tracking-tight text-white">
-                    {service.title}
-                  </h3>
-                  <p className="text-neutral-400 leading-relaxed text-sm">
-                    {service.description}
-                  </p>
                 </div>
               </FadeInWhenVisible>
             ))}
@@ -307,7 +435,7 @@ export default function App() {
       </section>
 
       <section id="portfolio" className="bg-[#111111]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 py-24 lg:py-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-20 lg:py-32">
           <FadeInWhenVisible>
             <p className="text-xs tracking-[0.4em] text-neutral-500 mb-4 uppercase text-center">Our Work</p>
             <h2 className="text-4xl md:text-5xl mb-4 tracking-tight font-light text-center text-white">
@@ -318,32 +446,99 @@ export default function App() {
             </p>
           </FadeInWhenVisible>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[
-              'https://images.unsplash.com/photo-1669387448840-610c588f003d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800',
-              'https://images.unsplash.com/photo-1774716925806-e152f1995bed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800',
-              'https://images.unsplash.com/photo-1772567732983-447c7db0ce4e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800',
-              'https://images.unsplash.com/photo-1774716926071-fc03e73d0806?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800',
-              'https://images.unsplash.com/photo-1687180498602-5a1046defaa4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800',
-              'https://images.unsplash.com/photo-1771862860802-bd2e375f7422?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800'
-            ].map((image, index) => (
-              <FadeInWhenVisible key={index} delay={index * 0.05}>
-                <div className="group relative overflow-hidden cursor-pointer aspect-square">
+          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+            {portfolioProjects.map((project, index) => (
+              <FadeInWhenVisible key={project.title} delay={index * 0.05}>
+                <button
+                  type="button"
+                  onClick={() => openProject(project)}
+                  className="group relative overflow-hidden cursor-pointer bg-black text-left w-full"
+                >
                   <img
-                    src={image}
-                    alt={`Gray Space Project ${index + 1}`}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 brightness-75 group-hover:brightness-90"
+                    src={project.cover}
+                    alt={project.title}
+                    className="w-full h-[380px] sm:h-[420px] md:h-[460px] object-cover transition-transform duration-700 group-hover:scale-105 brightness-90"
                   />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
-                </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10" />
+                  <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 backdrop-blur-[1.5px]">
+                    <div className="text-[11px] tracking-[0.35em] text-white/35 mb-4 uppercase">
+                      {project.category}
+                    </div>
+                    <h3 className="text-2xl sm:text-3xl md:text-4xl font-light text-white/85 mb-3 leading-none">
+                      {project.title}
+                    </h3>
+                    <p className="text-white/55 leading-relaxed text-base max-w-xs">
+                      {project.summary}
+                    </p>
+                  </div>
+                </button>
               </FadeInWhenVisible>
             ))}
           </div>
+
+          {selectedProject && (
+            <div
+              className="fixed inset-0 z-[70] bg-black/80 backdrop-blur-sm p-4 md:p-8 flex items-center justify-center"
+              onClick={closeProject}
+            >
+              <div
+                className="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto bg-[#0f0f0f] border border-white/10 shadow-2xl"
+                onClick={(event) => event.stopPropagation()}
+              >
+                <button
+                  type="button"
+                  onClick={closeProject}
+                  aria-label="Close project preview"
+                  className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center border border-white/10 bg-black/40 text-white/80 hover:text-white hover:border-white/30 transition-colors"
+                >
+                  <X size={18} />
+                </button>
+
+                <div className="grid lg:grid-cols-[1.2fr_0.8fr]">
+                  <div className="p-4 md:p-6">
+                    <img
+                      src={activeProjectImage || selectedProject.cover}
+                      alt={selectedProject.title}
+                      className="w-full h-[250px] sm:h-[320px] md:h-[520px] object-cover"
+                    />
+
+                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mt-3">
+                      {selectedProject.images.map((image, imageIndex) => (
+                        <button
+                          key={`${selectedProject.title}-${imageIndex}`}
+                          type="button"
+                          onClick={() => setActiveProjectImage(image)}
+                          className={`overflow-hidden border ${activeProjectImage === image ? 'border-white/40' : 'border-white/10'}`}
+                        >
+                          <img src={image} alt={`${selectedProject.title} view ${imageIndex + 1}`} className="w-full h-20 object-cover" />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="p-6 md:p-8 border-t lg:border-t-0 lg:border-l border-white/10 flex flex-col justify-center">
+                    <p className="text-[11px] tracking-[0.35em] text-white/35 mb-4 uppercase">
+                      {selectedProject.category}
+                    </p>
+                    <h3 className="text-3xl md:text-4xl font-light text-white/90 mb-4">
+                      {selectedProject.title}
+                    </h3>
+                    <p className="text-neutral-400 leading-relaxed mb-8">
+                      {selectedProject.summary}
+                    </p>
+                    <p className="text-sm text-neutral-500 leading-relaxed">
+                      Click the thumbnails to view all images in this project. When you add new projects later, the same popup gallery design will apply automatically.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
       <section id="contact" className="bg-[#0c0c0c]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 py-24 lg:py-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-20 lg:py-32">
           <FadeInWhenVisible>
             <p className="text-xs tracking-[0.4em] text-neutral-500 mb-4 uppercase text-center">Get In Touch</p>
             <h2 className="text-4xl md:text-5xl mb-4 tracking-tight font-light text-center text-white">
@@ -354,7 +549,7 @@ export default function App() {
             </p>
           </FadeInWhenVisible>
 
-          <div className="grid md:grid-cols-2 gap-16">
+          <div className="grid md:grid-cols-2 gap-10 md:gap-16">
             <FadeInWhenVisible>
               <div>
                 <div className="space-y-8">
@@ -364,7 +559,7 @@ export default function App() {
                     </div>
                     <div>
                       <div className="text-xs text-neutral-500 tracking-[0.2em] uppercase mb-1">Phone</div>
-                      <div className="text-white group-hover:text-neutral-300 transition-colors">+962 796 190 362</div>
+                      <div className="text-white group-hover:text-neutral-300 transition-colors break-words">+962 796 190 362</div>
                     </div>
                   </a>
 
@@ -374,7 +569,7 @@ export default function App() {
                     </div>
                     <div>
                       <div className="text-xs text-neutral-500 tracking-[0.2em] uppercase mb-1">Email</div>
-                      <div className="text-white group-hover:text-neutral-300 transition-colors">{CONTACT_EMAIL}</div>
+                      <div className="text-white group-hover:text-neutral-300 transition-colors break-all">{CONTACT_EMAIL}</div>
                     </div>
                   </a>
 
@@ -486,7 +681,7 @@ export default function App() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full border border-white/20 text-white px-8 py-4 text-xs tracking-[0.3em] uppercase hover:bg-white hover:text-neutral-900 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full border border-white/20 text-white px-6 sm:px-8 py-4 text-xs tracking-[0.2em] uppercase hover:bg-white hover:text-neutral-900 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {submitting ? 'Sending...' : 'Send Message'}
                 </button>
@@ -497,10 +692,10 @@ export default function App() {
       </section>
 
       <footer className="bg-[#080808] border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-16">
           <div className="grid md:grid-cols-3 gap-12 mb-12">
             <div>
-              <div className="text-xl tracking-[0.3em] font-light text-white mb-4">GRAY SPACE</div>
+              <img src={graySpaceLogo} alt="Gray Space" className="h-16 sm:h-20 md:h-24 w-auto mb-4 opacity-95" />
               <p className="text-neutral-500 text-sm leading-relaxed">
                 A luxury interior design studio dedicated to creating spaces that inspire and endure.
               </p>
