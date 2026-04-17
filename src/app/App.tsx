@@ -791,7 +791,7 @@ export default function App() {
               © 2026 Gray Space. All rights reserved.
             </p>
             <p className="text-neutral-700 text-xs">
-              Interior Design Studio
+              Gray Space. Architecture . Interiors . Fit-Out 
             </p>
           </div>
         </div>
