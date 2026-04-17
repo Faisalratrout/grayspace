@@ -8,3 +8,8 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+declare module '*.PNG' {
+  const pngUrl: string;
+  export default pngUrl;
+}

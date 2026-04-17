@@ -39,6 +39,7 @@ import sixthP1 from '../assets/6thP1.jpeg';
 import sixthP2 from '../assets/6thP2.jpeg';
 import sixthP3 from '../assets/6thP3.jpeg';
 import sixthP4 from '../assets/6thP4.jpeg';
+import heroBackgroundVideo from '../assets/backG.mp4';
 
 type FormData = {
   name: string;
@@ -61,7 +62,11 @@ type Project = {
 };
 
 const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
-const CONTACT_EMAIL = import.meta.env.VITE_PUBLIC_CONTACT_EMAIL || 'hello@grayspace.com';
+const CONTACT_EMAIL = import.meta.env.VITE_PUBLIC_CONTACT_EMAIL || 'Info@grayspacegroup.net';
+const INSTAGRAM_URL = 'https://www.instagram.com/grayspacegroupe?igsh=MTBydzkwbDdtMDV5eA==';
+const FACEBOOK_URL = 'https://www.facebook.com/people/Grayspace/100079703572061/#';
+const LOCATION_URL = 'https://share.google/NDQstB91IyYuR2ozt';
+const DOMAIN_NAME = 'Grayspacegroup.net';
 
 const portfolioProjects: Project[] = [
   {
@@ -291,9 +296,13 @@ export default function App() {
           style={{ opacity: heroOpacity, scale: heroScale }}
           className="absolute inset-0"
         >
-          <img
-            src="https://images.unsplash.com/photo-1666037805138-f227944ed8d7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=2000"
-            alt="Luxury interior by Gray Space"
+          <video
+            src={heroBackgroundVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/20" />
@@ -596,13 +605,13 @@ export default function App() {
             <FadeInWhenVisible>
               <div>
                 <div className="space-y-8">
-                  <a href="tel:+962796190362" className="flex items-start gap-5 group">
+                  <a href="tel:0795016601" className="flex items-start gap-5 group">
                     <div className="w-10 h-10 border border-white/10 flex items-center justify-center group-hover:border-white/30 transition-colors">
                       <Phone className="w-4 h-4 text-neutral-400" />
                     </div>
                     <div>
                       <div className="text-xs text-neutral-500 tracking-[0.2em] uppercase mb-1">Phone</div>
-                      <div className="text-white group-hover:text-neutral-300 transition-colors break-words">+962 796 190 362</div>
+                      <div className="text-white group-hover:text-neutral-300 transition-colors break-words">07 9501 6601</div>
                     </div>
                   </a>
 
@@ -622,38 +631,33 @@ export default function App() {
                     </div>
                     <div>
                       <div className="text-xs text-neutral-500 tracking-[0.2em] uppercase mb-1">Location</div>
-                      <div className="text-white">Amman, Jordan </div>
+                      <a href={LOCATION_URL} target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#d6c2a2] transition-colors">
+                        View location
+                      </a>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex gap-4 mt-14">
+                <div className="flex flex-wrap gap-4 pt-4">
                   <a
-                    href="https://instagram.com/grayspace"
+                    href={INSTAGRAM_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Instagram"
-                    className="w-10 h-10 border border-white/10 flex items-center justify-center text-neutral-400 hover:text-white hover:border-white/30 transition-colors"
+                    className="inline-flex items-center gap-3 border border-white/10 px-4 py-2 text-neutral-400 hover:text-white hover:border-white/30 transition-colors"
                   >
                     <Instagram size={16} />
+                    <span className="text-sm">@grayspacegroupe</span>
                   </a>
                   <a
-                    href="https://facebook.com/grayspace"
+                    href={FACEBOOK_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Facebook"
-                    className="w-10 h-10 border border-white/10 flex items-center justify-center text-neutral-400 hover:text-white hover:border-white/30 transition-colors"
+                    className="inline-flex items-center gap-3 border border-white/10 px-4 py-2 text-neutral-400 hover:text-white hover:border-white/30 transition-colors"
                   >
                     <Facebook size={16} />
-                  </a>
-                  <a
-                    href="https://linkedin.com/company/grayspace"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="LinkedIn"
-                    className="w-10 h-10 border border-white/10 flex items-center justify-center text-neutral-400 hover:text-white hover:border-white/30 transition-colors"
-                  >
-                    <Linkedin size={16} />
+                    <span className="text-sm">GraySpace</span>
                   </a>
                 </div>
               </div>
@@ -760,23 +764,24 @@ export default function App() {
             <div>
               <div className="text-xs tracking-[0.3em] text-neutral-500 uppercase mb-6">Contact</div>
               <div className="flex flex-col gap-3">
-                <a href="tel:+962796190362" className="text-sm text-neutral-400 hover:text-white transition-colors">
-                  +962 796 190 362
+                <a href="tel:0795016601" className="text-sm text-neutral-400 hover:text-white transition-colors">
+                  07 9501 6601
                 </a>
                 <a href={`mailto:${CONTACT_EMAIL}`} className="text-sm text-neutral-400 hover:text-white transition-colors">
                   {CONTACT_EMAIL}
                 </a>
-                <span className="text-sm text-neutral-500">Amman, Jordan</span>
+                <a href={LOCATION_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-neutral-500 hover:text-white transition-colors">
+                  View location
+                </a>
               </div>
-              <div className="flex gap-4 mt-6">
-                <a href="https://instagram.com/grayspace" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-neutral-500 hover:text-white transition-colors">
+              <div className="flex flex-wrap gap-4 mt-6">
+                <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="inline-flex items-center gap-2 text-neutral-500 hover:text-white transition-colors">
                   <Instagram size={16} />
+                  <span className="text-sm">@grayspacegroupe</span>
                 </a>
-                <a href="https://facebook.com/grayspace" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-neutral-500 hover:text-white transition-colors">
+                <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="inline-flex items-center gap-2 text-neutral-500 hover:text-white transition-colors">
                   <Facebook size={16} />
-                </a>
-                <a href="https://linkedin.com/company/grayspace" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-neutral-500 hover:text-white transition-colors">
-                  <Linkedin size={16} />
+                  <span className="text-sm">GraySpace</span>
                 </a>
               </div>
             </div>
