@@ -3,11 +3,42 @@ import type { ReactNode } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'motion/react';
 import { useForm } from 'react-hook-form';
 import { Mail, Phone, MapPin, Instagram, Facebook, Linkedin, Menu, X, ArrowRight } from 'lucide-react';
-import graySpaceLogo from '@/assets/Logo.PNG';
-import aboutImage from '@/assets/Residential.jpeg';
-import commercialImage from '@/assets/Commercial.jpeg';
-import architectureImage from '@/assets/Architecture .jpeg';
-import furnitureImage from '@/assets/Furniture.jpeg';
+import graySpaceLogo from '../assets/Logo.PNG';
+import aboutImage from '../assets/Residential.jpeg';
+import commercialImage from '../assets/Commercial.jpeg';
+import architectureImage from '../assets/Architecture .jpeg';
+import furnitureImage from '../assets/Furniture.jpeg';
+import firstP1 from '../assets/FirstP1.jpeg';
+import firstP2 from '../assets/FirstP2.jpeg';
+import firstP3 from '../assets/FirstP3.jpeg';
+import firstP4 from '../assets/FirstP4.jpeg';
+import firstP5 from '../assets/FirstP5.jpeg';
+import firstP6 from '../assets/FirstP6.jpeg';
+import secP1 from '../assets/SecP1.jpeg';
+import secP2 from '../assets/SecP2.jpeg';
+import secP3 from '../assets/SecP3.jpeg';
+import secP4 from '../assets/SecP4.jpeg';
+import secP5 from '../assets/SecP5.jpeg';
+import thirdP1 from '../assets/thirdP1.jpeg';
+import thirdP2 from '../assets/thirdP2.jpeg';
+import thirdP3 from '../assets/thirdP3.jpeg';
+import thirdP4 from '../assets/thirdP4.jpeg';
+import fourthP1 from '../assets/4thP1.jpeg';
+import fourthP2 from '../assets/4thP2.jpeg';
+import fourthP3 from '../assets/4thP3.jpeg';
+import fourthP4 from '../assets/4thP4.jpeg';
+import fourthP5 from '../assets/4thP5.jpeg';
+import fourthP6 from '../assets/4thP6.jpeg';
+import fifthP1 from '../assets/5thP1.jpeg';
+import fifthP2 from '../assets/5thP2.jpeg';
+import fifthP3 from '../assets/5thP3.jpeg';
+import fifthP4 from '../assets/5thP4.jpeg';
+import fifthP5 from '../assets/5thP5.jpeg';
+import fifthP6 from '../assets/5thP6.jpeg';
+import sixthP1 from '../assets/6thP1.jpeg';
+import sixthP2 from '../assets/6thP2.jpeg';
+import sixthP3 from '../assets/6thP3.jpeg';
+import sixthP4 from '../assets/6thP4.jpeg';
 
 type FormData = {
   name: string;
@@ -35,69 +66,81 @@ const CONTACT_EMAIL = import.meta.env.VITE_PUBLIC_CONTACT_EMAIL || 'hello@graysp
 const portfolioProjects: Project[] = [
   {
     title: 'Contemporary Urban Bistro Design',
-    category: 'Residential',
-    summary: 'A calm, layered residence balancing natural light, texture, and warmth.',
-    cover: aboutImage,
+    category: 'Commercial',
+    summary: 'A moody urban bistro concept shaped through warmth, texture, and refined dining atmosphere.',
+    cover: firstP1,
     images: [
-      aboutImage,
-      furnitureImage,
-      'https://images.unsplash.com/photo-1669387448840-610c588f003d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
-      'https://images.unsplash.com/photo-1774716925806-e152f1995bed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
+      firstP1,
+      firstP2,
+      firstP3,
+      firstP4,
+      firstP5,
+      firstP6,
     ],
   },
   {
     title: 'Soft Industrial Luxury',
     category: 'Commercial',
     summary: 'A refined commercial space designed for focus, elegance, and brand presence.',
-    cover: commercialImage,
+    cover: secP1,
     images: [
-      commercialImage,
-      'https://images.unsplash.com/photo-1687180498602-5a1046defaa4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
-      'https://images.unsplash.com/photo-1771862860802-bd2e375f7422?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
+      secP1,
+      secP2,
+      secP3,
+      secP4,
+      secP5,
     ],
   },
   {
     title: 'Warm Contemporary Living',
     category: 'Residential',
     summary: 'An inviting composition of soft tones, modern comfort, and layered warmth.',
-    cover: architectureImage,
+    cover: thirdP1,
     images: [
-      architectureImage,
-      'https://images.unsplash.com/photo-1774716926071-fc03e73d0806?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
-      'https://images.unsplash.com/photo-1772567732983-447c7db0ce4e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
+      thirdP1,
+      thirdP2,
+      thirdP3,
+      thirdP4,
     ],
   },
   {
     title: 'Middle Eastern Minimalism',
     category: 'Architecture',
     summary: 'Clean geometry and quiet materials inspired by regional elegance and restraint.',
-    cover: furnitureImage,
+    cover: fourthP1,
     images: [
-      furnitureImage,
-      aboutImage,
-      commercialImage,
+      fourthP1,
+      fourthP2,
+      fourthP3,
+      fourthP4,
+      fourthP5,
+      fourthP6,
     ],
   },
   {
     title: 'Aesthetic & Modern',
     category: 'Interior Design',
     summary: 'A polished visual language shaped by simplicity, balance, and modern detail.',
-    cover: 'https://images.unsplash.com/photo-1774716926071-fc03e73d0806?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
+    cover: fifthP1,
     images: [
-      'https://images.unsplash.com/photo-1774716926071-fc03e73d0806?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
-      'https://images.unsplash.com/photo-1687180498602-5a1046defaa4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
-      'https://images.unsplash.com/photo-1771862860802-bd2e375f7422?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
+      fifthP1,
+      fifthP2,
+      fifthP3,
+      fifthP4,
+      fifthP5,
+      fifthP6,
     ],
   },
   {
     title: 'Concept & Plans',
     category: 'Planning',
     summary: 'Early-stage concepts, planning studies, and visual direction for each project.',
-    cover: 'https://images.unsplash.com/photo-1772567732983-447c7db0ce4e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
+    cover: sixthP1,
     images: [
-      'https://images.unsplash.com/photo-1772567732983-447c7db0ce4e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
-      architectureImage,
-      commercialImage,
+      sixthP1,
+      sixthP2,
+      sixthP3,
+      sixthP4,
     ],
   },
 ];
