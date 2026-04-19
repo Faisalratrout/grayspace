@@ -66,7 +66,7 @@ const CONTACT_EMAIL = import.meta.env.VITE_PUBLIC_CONTACT_EMAIL || 'Info@grayspa
 const INSTAGRAM_URL = 'https://www.instagram.com/grayspacegroupe?igsh=MTBydzkwbDdtMDV5eA==';
 const FACEBOOK_URL = 'https://www.facebook.com/people/Grayspace/100079703572061/#';
 const LOCATION_URL = 'https://share.google/NDQstB91IyYuR2ozt';
-const DOMAIN_NAME = 'Grayspacegroup.net';
+const DOMAIN_NAME = 'grayspacegroup.net';
 
 const portfolioProjects: Project[] = [
   {
@@ -216,9 +216,10 @@ export default function App() {
       reset();
     } catch (err) {
       console.error('Form submission error:', err);
+      const reason = err instanceof Error ? err.message : 'Unknown submission error.';
       setSubmitState({
         type: 'error',
-        message: `Sorry, we could not send your message right now. Please email us directly at ${CONTACT_EMAIL}.`,
+        message: `Submission failed: ${reason}. Please email us directly at ${CONTACT_EMAIL} if needed.`,
       });
     } finally {
       setSubmitting(false);
@@ -227,7 +228,6 @@ export default function App() {
 
   return (
     <div className="bg-[#0c0c0c] text-neutral-100">
-      {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0c0c0c]/95 backdrop-blur-sm border-b border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="flex items-center justify-between h-16 sm:h-20">
@@ -290,7 +290,6 @@ export default function App() {
         )}
       </nav>
 
-      {/* Hero Section */}
       <section ref={heroRef} className="relative min-h-[100svh] overflow-hidden">
         <motion.div
           style={{ opacity: heroOpacity, scale: heroScale }}
