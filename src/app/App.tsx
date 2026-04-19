@@ -87,9 +87,8 @@ const portfolioProjects: Project[] = [
     title: 'Soft Industrial Luxury',
     category: 'Commercial',
     summary: 'A refined commercial space designed for focus, elegance, and brand presence.',
-    cover: secP1,
+    cover: secP2,
     images: [
-      secP1,
       secP2,
       secP3,
       secP4,
