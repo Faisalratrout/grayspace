@@ -63,7 +63,7 @@ type Project = {
 
 const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
 const CONTACT_EMAIL = import.meta.env.VITE_PUBLIC_CONTACT_EMAIL || 'Info@grayspacegroup.net';
-const INSTAGRAM_URL = 'https://www.instagram.com/grayspacegroupe?igsh=MTBydzkwbDdtMDV5eA==';
+const INSTAGRAM_URL = 'https://www.instagram.com/grayspace.group?igsh=MTBydzkwbDdtMDV5eA==';
 const FACEBOOK_URL = 'https://www.facebook.com/people/Grayspace/100079703572061/#';
 const LOCATION_URL = 'https://share.google/NDQstB91IyYuR2ozt';
 const DOMAIN_NAME = 'grayspacegroup.net';
@@ -645,7 +645,7 @@ export default function App() {
                     className="inline-flex items-center gap-3 border border-white/10 px-4 py-2 text-neutral-400 hover:text-white hover:border-white/30 transition-colors"
                   >
                     <Instagram size={16} />
-                    <span className="text-sm">@grayspacegroupe</span>
+                    <span className="text-sm"></span>
                   </a>
                   <a
                     href={FACEBOOK_URL}
@@ -775,7 +775,7 @@ export default function App() {
               <div className="flex flex-wrap gap-4 mt-6">
                 <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="inline-flex items-center gap-2 text-neutral-500 hover:text-white transition-colors">
                   <Instagram size={16} />
-                  <span className="text-sm">@grayspacegroupe</span>
+                  <span className="text-sm">@grayspace.group</span>
                 </a>
                 <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="inline-flex items-center gap-2 text-neutral-500 hover:text-white transition-colors">
                   <Facebook size={16} />
